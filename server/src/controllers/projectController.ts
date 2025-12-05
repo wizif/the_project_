@@ -9,8 +9,8 @@ export const getProjects = async (req: AuthRequest, res: Response): Promise<void
     const userId = req.user?._id;
     const isAdmin = req.user?.role === 'admin';
 
-    const query = isAdmin 
-      ? {} 
+    const query = isAdmin
+      ? {}
       : { $or: [{ owner: userId }, { 'team.user': userId }] };
 
     const projects = await Project.find(query)
@@ -42,16 +42,36 @@ export const getProject = async (req: AuthRequest, res: Response): Promise<void>
   }
 };
 
-// Create project
+// ✅ FIXED: Create project with proper team structure
 export const createProject = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+    console.log('📝 Creating project with data:', req.body);
+    
     const { name, description, team, startDate, endDate, priority } = req.body;
+
+    // ✅ FIX: Transform team array to proper format
+    const formattedTeam = team && Array.isArray(team) ? team.map((member: any) => {
+      // If member is already an object with user and role, use it
+      if (typeof member === 'object' && member.user) {
+        return {
+          user: member.user,
+          role: member.role || 'member'
+        };
+      }
+      // If member is just a string (user ID), format it
+      return {
+        user: member,
+        role: 'member'
+      };
+    }) : [];
+
+    console.log('✅ Formatted team:', formattedTeam);
 
     const project = await Project.create({
       name,
       description,
       owner: req.user?._id,
-      team: team || [],
+      team: formattedTeam,
       startDate,
       endDate,
       priority: priority || 'medium',
@@ -62,13 +82,15 @@ export const createProject = async (req: AuthRequest, res: Response): Promise<vo
       .populate('owner', 'name email')
       .populate('team.user', 'name email');
 
+    console.log('✅ Project created:', populatedProject);
     res.status(201).json(populatedProject);
   } catch (error: any) {
+    console.error('❌ Create project error:', error);
     res.status(500).json({ message: error.message });
   }
 };
 
-// Update project
+// ✅ FIXED: Update project with proper team structure
 export const updateProject = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { name, description, team, status, startDate, endDate, priority } = req.body;
@@ -92,7 +114,23 @@ export const updateProject = async (req: AuthRequest, res: Response): Promise<vo
 
     project.name = name || project.name;
     project.description = description || project.description;
-    project.team = team || project.team;
+    
+    // ✅ FIX: Format team properly
+    if (team) {
+      project.team = team.map((member: any) => {
+        if (typeof member === 'object' && member.user) {
+          return {
+            user: member.user,
+            role: member.role || 'member'
+          };
+        }
+        return {
+          user: member,
+          role: 'member'
+        };
+      });
+    }
+    
     project.status = status || project.status;
     project.startDate = startDate || project.startDate;
     project.endDate = endDate || project.endDate;
@@ -110,9 +148,12 @@ export const updateProject = async (req: AuthRequest, res: Response): Promise<vo
   }
 };
 
-// Delete project
+// Delete project - FIXED VERSION
 export const deleteProject = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+    console.log('🗑️ Attempting to delete project:', req.params.id);
+    console.log('👤 User:', req.user?._id, 'Role:', req.user?.role);
+
     const project = await Project.findById(req.params.id);
 
     if (!project) {
@@ -120,9 +161,14 @@ export const deleteProject = async (req: AuthRequest, res: Response): Promise<vo
       return;
     }
 
-    const userId = req.user?._id;
-    const isOwner = userId && project.owner.toString() === userId.toString();
+    console.log('📁 Project owner:', project.owner);
+
+    const userId = req.user?._id?.toString() || req.user?._id;
+    const projectOwnerId = project.owner?.toString();
+    const isOwner = userId && projectOwnerId && userId === projectOwnerId;
     const isAdmin = req.user?.role === 'admin';
+
+    console.log('✅ Authorization check:', { userId, projectOwnerId, isOwner, isAdmin });
 
     if (!isOwner && !isAdmin) {
       res.status(403).json({ message: 'Not authorized to delete this project' });
@@ -130,9 +176,10 @@ export const deleteProject = async (req: AuthRequest, res: Response): Promise<vo
     }
 
     await Project.findByIdAndDelete(req.params.id);
-
+    console.log('✅ Project deleted successfully');
     res.json({ message: 'Project deleted successfully' });
   } catch (error: any) {
+    console.error('❌ Delete project error:', error);
     res.status(500).json({ message: error.message });
   }
 };

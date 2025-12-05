@@ -17,8 +17,9 @@ router.use(protect);
 router.get('/profile', getProfile);
 router.put('/profile', updateProfile);
 
-// Admin routes
-router.get('/', adminOnly, getUsers);
+// ✅ Allow all users to see user list (for chat)
+router.get('/', getUsers);
+
 router.get('/:id', getUser);
 router.put('/:id/role', adminOnly, updateUserRole);
 router.delete('/:id', adminOnly, deleteUser);

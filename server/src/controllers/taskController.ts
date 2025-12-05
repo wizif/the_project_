@@ -24,23 +24,27 @@ export const getTasks = async (req: AuthRequest, res: Response): Promise<void> =
       query.assignedTo = assignedTo;
     }
 
-    // Non-admin users can only see their own tasks or tasks in their projects
+    // ✅ FIX: Non-admin users can see:
+    // 1. Tasks assigned to them
+    // 2. Tasks in projects they own
+    // 3. Tasks in projects where they are team members
     if (!isAdmin) {
       const userProjects = await Project.find({
         $or: [{ owner: userId }, { 'team.user': userId }]
       }).select('_id');
-
       const projectIds = userProjects.map(p => p._id);
-
+      
+      // ✅ FIXED: Allow users to see tasks assigned to them OR tasks in their projects
       query.$or = [
-        { assignedTo: userId },
-        { project: { $in: projectIds } }
+        { assignedTo: userId }, // ✅ Tasks assigned to this user
+        { createdBy: userId }, // ✅ Tasks created by this user
+        { project: { $in: projectIds } } // ✅ Tasks in their projects
       ];
     }
 
     const tasks = await Task.find(query)
       .populate('project', 'name')
-      .populate('assignedTo', 'name email')
+      .populate('assignedTo', 'name email avatar')
       .populate('createdBy', 'name email')
       .sort({ order: 1, createdAt: -1 });
 
@@ -70,7 +74,7 @@ export const getTask = async (req: AuthRequest, res: Response): Promise<void> =>
   }
 };
 
-// Create task (Admin only)
+// Create task
 export const createTask = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     console.log('📝 Creating task with data:', req.body);
@@ -138,7 +142,7 @@ export const createTask = async (req: AuthRequest, res: Response): Promise<void>
     // Populate and return
     const populatedTask = await Task.findById(task._id)
       .populate('project', 'name')
-      .populate('assignedTo', 'name email')
+      .populate('assignedTo', 'name email avatar')
       .populate('createdBy', 'name email');
 
     res.status(201).json(populatedTask);
@@ -151,9 +155,7 @@ export const createTask = async (req: AuthRequest, res: Response): Promise<void>
   }
 };
 
-// ✅ UPDATED: Update task
 // Update task
-// Update task - BULLETPROOF VERSION
 export const updateTask = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const task = await Task.findById(req.params.id);
@@ -168,12 +170,11 @@ export const updateTask = async (req: AuthRequest, res: Response): Promise<void>
     const isAssignee = userId && task.assignedTo && task.assignedTo.toString() === userId.toString();
 
     // ✅ SPECIAL CASE: Anyone can mark task as user-completed
-    const isOnlyMarkingComplete = 
-      req.body.isUserCompleted !== undefined && 
+    const isOnlyMarkingComplete =
+      req.body.isUserCompleted !== undefined &&
       Object.keys(req.body).length === 1;
 
     if (isOnlyMarkingComplete) {
-      // Allow ANYONE to mark task as user-completed (no role check)
       task.isUserCompleted = req.body.isUserCompleted;
       if (req.body.isUserCompleted) {
         task.userCompletedAt = new Date();
@@ -200,7 +201,7 @@ export const updateTask = async (req: AuthRequest, res: Response): Promise<void>
 
     const updatedTask = await Task.findById(task._id)
       .populate('project', 'name')
-      .populate('assignedTo', 'name email')
+      .populate('assignedTo', 'name email avatar')
       .populate('createdBy', 'name email');
 
     res.json(updatedTask);
@@ -210,12 +211,10 @@ export const updateTask = async (req: AuthRequest, res: Response): Promise<void>
   }
 };
 
-
 // Update task order (for drag-and-drop)
 export const updateTaskOrder = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { tasks } = req.body; // Array of { id, order, status }
-
+    const { tasks } = req.body;
     const bulkOps = tasks.map((task: any) => ({
       updateOne: {
         filter: { _id: task.id },
@@ -224,14 +223,13 @@ export const updateTaskOrder = async (req: AuthRequest, res: Response): Promise<
     }));
 
     await Task.bulkWrite(bulkOps);
-
     res.json({ message: 'Task order updated successfully' });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Delete task (Admin only)
+// Delete task
 export const deleteTask = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const task = await Task.findById(req.params.id);
@@ -242,7 +240,6 @@ export const deleteTask = async (req: AuthRequest, res: Response): Promise<void>
     }
 
     await Task.findByIdAndDelete(req.params.id);
-
     res.json({ message: 'Task deleted successfully' });
   } catch (error: any) {
     console.error('Delete task error:', error);

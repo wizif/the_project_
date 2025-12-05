@@ -1,9 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, UserPlus, Users } from 'lucide-react';
 import api from '@/lib/axios';
 import { User } from '@/types';
+
+interface Team {
+  _id: string;
+  name: string;
+  description?: string;
+}
 
 interface Props {
   isOpen: boolean;
@@ -18,17 +24,21 @@ export default function ModalNewTask({ isOpen, onClose, projectId, onSuccess }: 
     description: '',
     status: 'todo',
     priority: 'medium',
-    assignedTo: '',
+    assignedTo: '', // Keep for backward compatibility (primary assignee)
+    assignedUsers: [] as string[], // NEW: Multiple users
+    assignedTeam: '', // NEW: Team assignment
     dueDate: '',
     tags: ''
   });
   const [users, setUsers] = useState<User[]>([]);
+  const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (isOpen) {
       fetchUsers();
+      fetchTeams();
     }
   }, [isOpen]);
 
@@ -39,6 +49,25 @@ export default function ModalNewTask({ isOpen, onClose, projectId, onSuccess }: 
     } catch (error) {
       console.error('Error fetching users:', error);
     }
+  };
+
+  const fetchTeams = async () => {
+    try {
+      const { data } = await api.get('/teams');
+      setTeams(data);
+    } catch (error) {
+      console.error('Error fetching teams:', error);
+    }
+  };
+
+  // Toggle user selection
+  const toggleUserSelection = (userId: string) => {
+    setFormData(prev => ({
+      ...prev,
+      assignedUsers: prev.assignedUsers.includes(userId)
+        ? prev.assignedUsers.filter(id => id !== userId)
+        : [...prev.assignedUsers, userId]
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,7 +81,7 @@ export default function ModalNewTask({ isOpen, onClose, projectId, onSuccess }: 
         project: projectId,
         tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : []
       });
-      
+
       onSuccess?.();
       onClose();
       
@@ -63,6 +92,8 @@ export default function ModalNewTask({ isOpen, onClose, projectId, onSuccess }: 
         status: 'todo',
         priority: 'medium',
         assignedTo: '',
+        assignedUsers: [],
+        assignedTeam: '',
         dueDate: '',
         tags: ''
       });
@@ -77,60 +108,61 @@ export default function ModalNewTask({ isOpen, onClose, projectId, onSuccess }: 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
-      
-      <div className="relative bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-2xl font-bold text-gray-900">Create New Task</h2>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 px-6 py-4 flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Create New Task</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
             <X size={24} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
               {error}
             </div>
           )}
 
+          {/* Task Title */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Task Title *
             </label>
             <input
               type="text"
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter task title"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              placeholder="Enter task title"
             />
           </div>
 
+          {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description
             </label>
             <textarea
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              placeholder="Describe the task..."
+              rows={3}
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              placeholder="Enter task description"
             />
           </div>
 
+          {/* Status and Priority Row */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Status
               </label>
               <select
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               >
                 <option value="todo">To Do</option>
                 <option value="in-progress">In Progress</option>
@@ -140,13 +172,13 @@ export default function ModalNewTask({ isOpen, onClose, projectId, onSuccess }: 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Priority
               </label>
               <select
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 value={formData.priority}
                 onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -156,63 +188,107 @@ export default function ModalNewTask({ isOpen, onClose, projectId, onSuccess }: 
             </div>
           </div>
 
-          {/* ASSIGN TO USER - NEW */}
+          {/* ASSIGN TO TEAM */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Assign To
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+              <Users size={16} />
+              Assign to Team (Optional)
             </label>
             <select
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              value={formData.assignedTo}
-              onChange={(e) => setFormData({ ...formData, assignedTo: e.target.value })}
+              value={formData.assignedTeam}
+              onChange={(e) => setFormData({ ...formData, assignedTeam: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
             >
-              <option value="">Unassigned</option>
-              {users.map(user => (
-                <option key={user._id} value={user._id}>
-                  {user.name} ({user.email})
+              <option value="">No Team</option>
+              {teams.map(team => (
+                <option key={team._id} value={team._id}>
+                  {team.name}
                 </option>
               ))}
             </select>
           </div>
 
+          {/* ASSIGN TO MULTIPLE USERS */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+              <UserPlus size={16} />
+              Assign to Users (Select Multiple)
+            </label>
+            <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-3 max-h-48 overflow-y-auto space-y-2">
+              {users.length === 0 ? (
+                <p className="text-sm text-gray-500">No users available</p>
+              ) : (
+                users.map(user => (
+                  <label
+                    key={user._id}
+                    className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.assignedUsers.includes(user._id)}
+                      onChange={() => toggleUserSelection(user._id)}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
+                      </div>
+                    </div>
+                  </label>
+                ))
+              )}
+            </div>
+            {formData.assignedUsers.length > 0 && (
+              <p className="text-sm text-blue-600 dark:text-blue-400 mt-2">
+                {formData.assignedUsers.length} user(s) selected
+              </p>
+            )}
+          </div>
+
+          {/* Due Date */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Due Date
             </label>
             <input
               type="date"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               value={formData.dueDate}
               onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
             />
           </div>
 
-          {/* TAGS - NEW */}
+          {/* Tags */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Tags (comma separated)
             </label>
             <input
               type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g. frontend, urgent, bug"
               value={formData.tags}
               onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              placeholder="frontend, bug, urgent"
             />
           </div>
 
-          <div className="flex gap-4 pt-4">
+          {/* Actions */}
+          <div className="flex gap-3 pt-4">
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
             >
               {loading ? 'Creating...' : 'Create Task'}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium"
+              className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>

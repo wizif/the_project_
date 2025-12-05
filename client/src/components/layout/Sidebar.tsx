@@ -70,6 +70,14 @@ const Sidebar = () => {
     }
 
     fetchProjects();
+
+    // ✅ FIX: Auto-refresh projects every 3 seconds to update deleted projects
+    const interval = setInterval(() => {
+      fetchProjects();
+    }, 3000);
+
+    // ✅ Cleanup interval on unmount
+    return () => clearInterval(interval);
   }, []);
 
   const fetchProjects = async () => {

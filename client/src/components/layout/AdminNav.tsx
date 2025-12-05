@@ -29,7 +29,7 @@ export default function AdminNav() {
 
   return (
     <nav className="bg-white shadow-sm border-b dark:bg-gray-800 dark:border-gray-700"> {/* ✅ ADDED: Dark mode */}
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-8xl mx-auto px-4">
         <div className="flex items-center gap-1">
           {navItems.map((item) => {
             const Icon = item.icon;

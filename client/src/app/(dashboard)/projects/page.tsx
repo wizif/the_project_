@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "@/lib/axios";
 import Link from "next/link";
-import { Plus, Briefcase, Calendar, Users } from "lucide-react";
+import { Plus, Briefcase, Calendar, Users, Trash2, MoreVertical } from "lucide-react";
 
 interface Project {
   _id: string;
@@ -20,15 +20,15 @@ export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
-  const [currentUser, setCurrentUser] = useState<any>(null); // ✅ ADDED
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [showMenu, setShowMenu] = useState<string | null>(null);
 
   useEffect(() => {
-    // ✅ ADDED: Get current user from localStorage
     const userStr = localStorage.getItem('user');
     if (userStr) {
-      setCurrentUser(JSON.parse(userStr));
+      const user = JSON.parse(userStr);
+      setCurrentUser(user);
     }
-
     fetchProjects();
   }, []);
 
@@ -40,6 +40,21 @@ export default function ProjectsPage() {
     } catch (error) {
       console.error("Error fetching projects:", error);
       setLoading(false);
+    }
+  };
+
+  const handleDeleteProject = async (projectId: string) => {
+    if (!confirm("Are you sure you want to delete this project? This will also delete all associated tasks.")) {
+      return;
+    }
+
+    try {
+      await axios.delete(`/projects/${projectId}`);
+      setProjects(projects.filter(p => p._id !== projectId));
+      setShowMenu(null);
+    } catch (error: any) {
+      console.error("❌ Error deleting project:", error);
+      alert(error.response?.data?.message || 'Failed to delete project');
     }
   };
 
@@ -87,7 +102,6 @@ export default function ProjectsPage() {
           </p>
         </div>
         
-        {/* ✅ ADDED: Conditional rendering based on user role */}
         {currentUser?.role === 'admin' && (
           <Link
             href="/projects/new"
@@ -132,54 +146,98 @@ export default function ProjectsPage() {
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
-            <Link
-              key={project._id}
-              href={`/projects/${project._id}`}
-              className="group block"
-            >
-              <div className="h-full rounded-lg bg-white p-6 shadow-md transition-all hover:shadow-lg dark:bg-gray-800">
-                <div className="mb-4 flex items-start justify-between">
-                  <h3 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
-                    {project.name}
-                  </h3>
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-medium ${getStatusColor(
-                      project.status
-                    )}`}
-                  >
-                    {project.status}
-                  </span>
-                </div>
+            <div key={project._id} className="relative group">
+              <div className="h-full rounded-lg bg-white p-6 shadow-md transition-all hover:shadow-lg dark:bg-gray-800 border border-transparent hover:border-blue-500">
+                
+                {/* Three-dot Menu - Admin Only */}
+                {currentUser?.role === 'admin' && (
+                  <div className="absolute top-4 right-4">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowMenu(showMenu === project._id ? null : project._id);
+                      }}
+                      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <MoreVertical className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                    </button>
 
-                <p className="mb-4 line-clamp-2 text-gray-600 dark:text-gray-400">
-                  {project.description || "No description provided"}
-                </p>
+                    {/* Dropdown Menu */}
+                    {showMenu === project._id && (
+                      <>
+                        {/* Backdrop to close menu */}
+                        <div 
+                          className="fixed inset-0 z-10" 
+                          onClick={() => setShowMenu(null)}
+                        />
+                        
+                        {/* Menu */}
+                        <div className="absolute right-0 mt-2 w-48 rounded-lg bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 z-20">
+                          <Link
+                            href={`/projects/${project._id}/edit`}
+                            className="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-lg"
+                            onClick={() => setShowMenu(null)}
+                          >
+                            <span>Edit Project</span>
+                          </Link>
+                          <button
+                            onClick={() => handleDeleteProject(project._id)}
+                            className="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-b-lg"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            <span>Delete Project</span>
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
 
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    <Calendar className="h-4 w-4" />
-                    {project.startDate
-                      ? new Date(project.startDate).toLocaleDateString()
-                      : "No start date"}
+                {/* Project Content */}
+                <Link href={`/projects/${project._id}`} className="block">
+                  <div className="mb-4 flex items-start justify-between pr-8">
+                    <h3 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
+                      {project.name}
+                    </h3>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap ${getStatusColor(
+                        project.status
+                      )}`}
+                    >
+                      {project.status}
+                    </span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    <Users className="h-4 w-4" />
-                    {project.team?.length || 0} team members
-                  </div>
-                </div>
+                  <p className="mb-4 line-clamp-2 text-gray-600 dark:text-gray-400">
+                    {project.description || "No description provided"}
+                  </p>
 
-                <div className="mt-4">
-                  <span
-                    className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${getPriorityColor(
-                      project.priority
-                    )}`}
-                  >
-                    {project.priority} priority
-                  </span>
-                </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                      <Calendar className="h-4 w-4" />
+                      {project.startDate
+                        ? new Date(project.startDate).toLocaleDateString()
+                        : "No start date"}
+                    </div>
+
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                      <Users className="h-4 w-4" />
+                      {project.team?.length || 0} team members
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <span
+                      className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${getPriorityColor(
+                        project.priority
+                      )}`}
+                    >
+                      {project.priority} priority
+                    </span>
+                  </div>
+                </Link>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}

@@ -5,6 +5,8 @@ export interface ITask extends Document {
   description?: string;
   project: mongoose.Types.ObjectId;
   assignedTo?: mongoose.Types.ObjectId;
+  assignedUsers: mongoose.Types.ObjectId[]; // ✅ NEW: Multiple users
+  assignedTeam?: mongoose.Types.ObjectId; // ✅ NEW: Team assignment
   status: 'todo' | 'in-progress' | 'in-review' | 'completed';
   priority: 'low' | 'medium' | 'high' | 'urgent';
   dueDate?: Date;
@@ -12,8 +14,8 @@ export interface ITask extends Document {
   actualHours?: number;
   tags: string[];
   order: number;
-  isUserCompleted: boolean; // ✅ ADD THIS
-  userCompletedAt?: Date; // ✅ ADD THIS
+  isUserCompleted: boolean;
+  userCompletedAt?: Date;
   attachments: Array<{
     name: string;
     url: string;
@@ -50,6 +52,17 @@ const taskSchema = new Schema({
     ref: 'User',
     required: false
   },
+  // ✅ NEW: Multiple user assignment
+  assignedUsers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  // ✅ NEW: Team assignment
+  assignedTeam: {
+    type: Schema.Types.ObjectId,
+    ref: 'Team',
+    required: false
+  },
   status: {
     type: String,
     enum: ['todo', 'in-progress', 'in-review', 'completed'],
@@ -80,7 +93,6 @@ const taskSchema = new Schema({
     type: Number,
     default: 0
   },
-  // ✅ ADD THESE FIELDS
   isUserCompleted: {
     type: Boolean,
     default: false
