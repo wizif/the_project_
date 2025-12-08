@@ -6,11 +6,8 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // ✅ Skip prerendering errors
-  staticPageGenerationTimeout: 1000,
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
+  // ✅ Remove output: 'export' - it breaks dynamic features!
+  // ✅ Use standalone for SSR support
 };
 
 export default nextConfig;
