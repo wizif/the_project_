@@ -6,11 +6,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  output: 'export',  // ← MUST HAVE THIS
   images: {
-    unoptimized: true,  // ← MUST HAVE THIS
+    unoptimized: true,
   },
-  trailingSlash: true,  // ← HELPS WITH ROUTING
 };
 
 export default nextConfig;
