@@ -191,7 +191,7 @@ export default function AdminDashboard() {
   return (
     <div className="p-6 md:p-8 bg-gray-50 min-h-screen dark:bg-gray-900 transition-colors">
       <h1 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">
-        Admin Project Analytics
+        Admin Project Dashboard
       </h1>
 
       {/* Stats Cards */}
