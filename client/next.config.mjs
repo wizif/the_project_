@@ -6,8 +6,11 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // ✅ Remove output: 'export' - it breaks dynamic features!
-  // ✅ Use standalone for SSR support
+  output: 'export',  // ← MUST HAVE THIS
+  images: {
+    unoptimized: true,  // ← MUST HAVE THIS
+  },
+  trailingSlash: true,  // ← HELPS WITH ROUTING
 };
 
 export default nextConfig;
