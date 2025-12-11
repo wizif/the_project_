@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://ryan-safari-alternate-greensboro.trycloudflare.com/api/:path*"
+      "destination": "https://provides-netscape-vegetable-parent.trycloudflare.com/api/:path*"
     }
   ]
 }
