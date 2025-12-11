@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://13.60.228.51/api/:path*"
+      "destination": "https://ryan-safari-alternate-greensboro.trycloudflare.com/api/:path*"
     }
   ]
 }
