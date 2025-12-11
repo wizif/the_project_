@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://provides-netscape-vegetable-parent.trycloudflare.com/api/:path*"
+      "destination": "https://13.60.228.51/api/:path*"
     }
   ]
 }
