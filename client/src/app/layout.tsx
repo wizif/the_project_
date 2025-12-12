@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Dev Workflow App",
   description: "Project and task management system",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
