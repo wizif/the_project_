@@ -27,7 +27,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
-    const socketInstance = io('http://localhost:5000', {
+    const SOCKET_URL = typeof window !== 'undefined' ? window.location.origin : '';
+
+    const socketInstance = io(SOCKET_URL, {
       auth: {
         token,
       },

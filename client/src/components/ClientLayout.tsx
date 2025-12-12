@@ -29,8 +29,8 @@ interface UserType {
   avatar?: string;
 }
 
-const API_URL = 'http://localhost:5000';
-const SOCKET_URL = 'http://localhost:5000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+const SOCKET_URL = typeof window !== 'undefined' ? window.location.origin : '';
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -118,7 +118,7 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   const loadUsers = async () => {
     console.log('📥 Loading users...');
     try {
-      const response = await axios.get(`${API_URL}/api/users`, {
+      const response = await axios.get(`${API_URL}/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log('✅ Users loaded:', response.data);
@@ -133,7 +133,7 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   const loadMessages = async (userId: string) => {
     console.log('📥 Loading messages for user:', userId);
     try {
-      const response = await axios.get(`${API_URL}/api/chat/conversation/${userId}`, {
+      const response = await axios.get(`${API_URL}/chat/conversation/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log('✅ Messages loaded:', response.data);
