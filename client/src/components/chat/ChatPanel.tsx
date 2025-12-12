@@ -39,7 +39,7 @@ interface Conversation {
   unreadCount: number;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 export default function ChatPanel() {
   const { socket, isConnected } = useSocket();
@@ -69,7 +69,7 @@ export default function ChatPanel() {
   // Load conversations
   const loadConversations = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/chat/conversations`, {
+      const response = await axios.get(`${API_URL}/chat/conversations`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setConversations(response.data);
@@ -85,14 +85,14 @@ export default function ChatPanel() {
   // Load messages with specific user
   const loadMessages = async (userId: string) => {
     try {
-      const response = await axios.get(`${API_URL}/api/chat/conversation/${userId}`, {
+      const response = await axios.get(`${API_URL}/chat/conversation/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessages(response.data);
 
       // Mark as read
       await axios.put(
-        `${API_URL}/api/chat/read/${userId}`,
+        `${API_URL}/chat/read/${userId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -119,7 +119,7 @@ export default function ChatPanel() {
         // Mark as read if chat is open
         if (message.sender._id === selectedUser._id) {
           axios.put(
-            `${API_URL}/api/chat/read/${selectedUser._id}`,
+            `${API_URL}/chat/read/${selectedUser._id}`,
             {},
             { headers: { Authorization: `Bearer ${token}` } }
           );

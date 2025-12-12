@@ -25,7 +25,7 @@ interface TaskCommentsProps {
   onClose?: () => void;
 }
 
-const API_URL = 'http://localhost:5000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 export default function TaskComments({ taskId, onClose }: TaskCommentsProps) {
   const [comments, setComments] = useState<Comment[]>([]);
@@ -42,7 +42,7 @@ export default function TaskComments({ taskId, onClose }: TaskCommentsProps) {
   // Load comments
   const loadComments = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/comments/task/${taskId}`, {
+      const response = await axios.get(`${API_URL}/comments/task/${taskId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setComments(response.data);
@@ -83,7 +83,7 @@ export default function TaskComments({ taskId, onClose }: TaskCommentsProps) {
     setLoading(true);
     try {
       const response = await axios.post(
-        `${API_URL}/api/comments/task/${taskId}`,
+        `${API_URL}/comments/task/${taskId}`,
         { text: newComment.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -113,7 +113,7 @@ export default function TaskComments({ taskId, onClose }: TaskCommentsProps) {
     setLoading(true);
     try {
       const response = await axios.put(
-        `${API_URL}/api/comments/${commentId}`,
+        `${API_URL}/comments/${commentId}`,
         { text: editText.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -136,7 +136,7 @@ export default function TaskComments({ taskId, onClose }: TaskCommentsProps) {
     if (!confirm('Are you sure you want to delete this comment?')) return;
 
     try {
-      await axios.delete(`${API_URL}/api/comments/${commentId}`, {
+      await axios.delete(`${API_URL}/comments/${commentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
