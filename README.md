@@ -1,5 +1,5 @@
 # 🔗 DevConnect - Developer Collaboration Platform
-
+.
 ### A Modern Full-Stack Application for Developer Networking & Real-Time Collaboration
 
 [![MERN Stack](https://img.shields.io/badge/MERN-Stack-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://mern.io/)
