@@ -30,7 +30,7 @@ export const logAudit = async (
     // Don't throw - we don't want audit logging to break the app
   }
 };
-
+ 
 // Middleware wrapper for automatic logging
 export const auditMiddleware = (
   action: string,
