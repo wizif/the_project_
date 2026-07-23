@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import { connectDB } from './config/db';
 import Message from './models/Message';
 
-// Import routes
+// Import routes 
 import authRoutes from './routes/auth';
 import projectRoutes from './routes/projects';
 import taskRoutes from './routes/tasks';
