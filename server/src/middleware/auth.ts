@@ -6,6 +6,7 @@ export interface AuthRequest extends Request {
   user?: IUser;
 }
 
+
 export const protect = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   let token: string | undefined;
 
