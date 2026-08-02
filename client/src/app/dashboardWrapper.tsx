@@ -1,4 +1,4 @@
-  "use client";
+ "use client";
 
 import React, { useEffect } from "react";
 import Navbar from "../components/layout/Navbar";  // ✅ FIXED: Changed from layout to layouts
