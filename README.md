@@ -1,84 +1,105 @@
-# 🚀 DevFlow — Developer Workflow & Collaboration Platform
+<div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![Socket.io](https://img.shields.io/badge/Socket.io-Real--Time-010101?style=for-the-badge&logo=socketdotio&logoColor=white)](https://socket.io/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+# DevFlow
 
-**DevFlow** is a modern, full-stack project management and collaboration platform built specifically for development teams. It brings together agile sprint planning, multiple task visualization views (Kanban, Table, and Gantt Timeline), real-time direct messaging, live task discussions, role-based access control (RBAC), team performance analytics, and system audit logging into a single cohesive workspace.
+### Developer Workflow & Collaboration Platform
+
+[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Socket.io](https://img.shields.io/badge/Socket.io-Real--Time-010101?style=flat-square&logo=socketdotio&logoColor=white)](https://socket.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+
+<br />
+
+<a href="https://git.io/typing-svg">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=1000&color=2563EB&center=true&vCenter=true&width=620&lines=Full-Stack+Developer+Workflow+Platform;Interactive+Kanban%2C+Table+%26+Gantt+Timeline;Real-Time+Socket.io+Chat+%26+Discussions;Role-Based+Access+Control+%26+Audit+Logging" alt="Typing SVG Animation" />
+</a>
+
+<p align="center">
+  A full-stack project management and collaboration platform built for agile development teams, featuring multi-view task tracking, real-time messaging, role-based administration, and audit logging.
+</p>
+
+</div>
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [Key Features](#-key-features)
-- [System Architecture](#-system-architecture)
-- [Tech Stack](#-tech-stack)
-- [Project Directory Structure](#-project-directory-structure)
-- [Getting Started](#-getting-started)
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [1. Clone Repository](#1-clone-repository)
   - [2. Server Setup](#2-server-setup)
   - [3. Client Setup](#3-client-setup)
   - [4. Seed Database](#4-seed-database)
-- [Default Test Credentials](#-default-test-credentials)
-- [Environment Variables](#-environment-variables)
-- [REST API Reference](#-rest-api-reference)
-- [Socket.io Real-Time Events](#-socketio-real-time-events)
-- [Production Deployment](#-production-deployment)
-- [License](#-license)
+- [Seed Accounts](#seed-accounts)
+- [Environment Variables](#environment-variables)
+- [API Reference](#api-reference)
+- [WebSocket Events](#websocket-events)
+- [Deployment](#deployment)
+- [License](#license)
 
 ---
 
-## ✨ Key Features
+## Overview
 
-### 📋 Multi-View Task & Sprint Management
-- **Kanban Board**: Drag-and-drop workflow tracking (`@dnd-kit`) across four status columns: `To Do`, `In Progress`, `In Review`, and `Completed`.
-- **Data Table View**: High-density tabular view with sorting, status filtering, and priority indicators powered by `@tanstack/react-table`.
-- **Gantt Timeline Chart**: Visual project roadmaps, schedule dependencies, and milestone tracking powered by `gantt-task-react`.
-- **Task Creation & Assignment**: Set priorities (`Low`, `Medium`, `High`, `Urgent`), target due dates, tags, and assignees.
-
-### 💬 Real-Time Collaboration
-- **Live 1-on-1 Chat**: Direct real-time messaging powered by Socket.io, with conversation history persisted in MongoDB.
-- **Presence & Status**: Real-time user online/offline status tracking with active user badges.
-- **Typing Indicators**: Instant feedback when teammates are typing.
-- **Task Comments Stream**: Live, broadcasted discussions on task cards with instant updates for all active viewers.
-
-### 🛡️ Role-Based Access Control (RBAC) & Security
-- **Admin & User Roles**: Distinct access levels and customized dashboard interfaces.
-- **JWT Authentication**: Secure stateless token authentication with bcrypt password hashing.
-- **Route Protection**: Server-side middleware (`protect` and `adminOnly`) and client-side route guards.
-
-### 📊 Admin Command Center & Analytics
-- **Executive KPI Dashboard**: Overview of total users, active projects, task throughput, and completion velocity.
-- **Interactive Visualizations**: Status distribution and priority breakdown charts built with `Recharts`.
-- **Comprehensive Audit Logs**: Automated tracking of administrative and user actions (`CREATE`, `UPDATE`, `DELETE`, `ASSIGN_TASK`, `CHANGE_ROLE`, etc.) with IP address, user agent, and automated 90-day retention index.
-- **Team & User Management**: Manage organization members, reassign roles, configure team workspaces, and manage project assignments.
-
-### 🎨 Modern Developer-Centric UI
-- **Dark & Light Mode**: Seamless theme switching with persistent preferences.
-- **Fluid Visuals**: WebGL Liquid Chrome dynamic shader background on landing pages.
-- **Responsive Design**: Designed with Tailwind CSS for smooth usage on desktops, tablets, and mobile screens.
+**DevFlow** provides engineering teams with an integrated environment to plan sprints, track tasks, and collaborate in real time. It combines project visualization tools (Kanban boards, structured tables, and Gantt charts) with live 1-on-1 team chat, task-level comment threads, activity audit logging, and team performance analytics.
 
 ---
 
-## 🏗️ System Architecture
+## Features
+
+### Multi-View Task Management
+- **Kanban Board**: Drag-and-drop workflow progression powered by `@dnd-kit` across `To Do`, `In Progress`, `In Review`, and `Completed` columns.
+- **Data Table View**: High-density table with column sorting, status filtering, and priority indicators built with `@tanstack/react-table`.
+- **Gantt Timeline Chart**: Schedule visualization, dependency planning, and milestone tracking powered by `gantt-task-react`.
+- **Task Attributes**: Priority tags (`Low`, `Medium`, `High`, `Urgent`), assignees, due dates, custom tags, and user completion tracking.
+
+### Real-Time Collaboration
+- **Direct Messaging**: 1-on-1 chat over WebSockets (Socket.io) with message persistence in MongoDB.
+- **Presence Tracking**: Live online/offline status indicators for all team members.
+- **Typing Indicators**: Real-time feedback when other participants are typing.
+- **Live Comments**: Immediate broadcast of task comments to all active collaborators.
+
+### Authentication & Access Control
+- **Role-Based Access (RBAC)**: Distinct permissions and views for `admin` and `user` roles.
+- **JWT Authentication**: Token-based authentication with bcrypt-hashed passwords.
+- **Protected Endpoints**: Server-side route guards (`protect` and `adminOnly`) with automatic client token refresh/redirect handling.
+
+### Admin Governance & Analytics
+- **Dashboard Metrics**: High-level counters for total users, active projects, task distribution, and completion rates.
+- **Visual Analytics**: Interactive status and priority distribution charts rendered with `Recharts`.
+- **Audit Logging**: Comprehensive log of actions (`CREATE`, `UPDATE`, `DELETE`, `LOGIN`, `ASSIGN_TASK`, `CHANGE_ROLE`) with IP address, user agent, and automated 90-day TTL data expiration.
+- **Team Management**: Team workspace creation, lead assignment, and project allocations.
+
+### User Experience
+- **Theme Modes**: Dark and light themes via `next-themes` and Tailwind CSS.
+- **Landing Page Visuals**: Interactive WebGL Liquid Chrome shader background using `ogl`.
+- **Responsive Layout**: Fully adaptive layouts across mobile, tablet, and desktop viewports.
+
+---
+
+## Architecture
 
 ```mermaid
 graph TD
     subgraph Client ["Frontend (Next.js 14 App Router)"]
         UI["React UI (Tailwind CSS, Lucide, Recharts)"]
-        State["Redux Toolkit & Context API"]
+        State["Redux Toolkit & SocketContext"]
         AxiosClient["Axios HTTP Client (JWT Interceptor)"]
         SocketClient["Socket.io Client"]
     end
 
     subgraph Server ["Backend (Node.js & Express)"]
         ExpressApp["Express Server (:5000)"]
-        AuthMiddleware["JWT Auth Middleware (protect / adminOnly)"]
+        AuthMiddleware["JWT Middleware (protect / adminOnly)"]
         Controllers["Controllers (Projects, Tasks, Chat, Analytics, Audit)"]
         SocketServer["Socket.io Server (Real-Time Engine)"]
     end
@@ -96,7 +117,7 @@ graph TD
     UI --> State
     State --> AxiosClient
     State --> SocketClient
-    AxiosClient -->|"HTTP REST Requests (Bearer Token)"| AuthMiddleware
+    AxiosClient -->|"REST Requests (Bearer Token)"| AuthMiddleware
     SocketClient <-->|"WebSockets (Handshake JWT)"| SocketServer
 
     AuthMiddleware --> Controllers
@@ -114,88 +135,84 @@ graph TD
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend (`/client`)
-- **Framework**: [Next.js 14](https://nextjs.org/) (App Router, React 18)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/), `tailwindcss-animate`, `next-themes`
-- **State Management**: [Redux Toolkit](https://redux-toolkit.js.org/), React Context API (`SocketContext`)
-- **Drag & Drop**: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`
-- **Tables & Charts**: `@tanstack/react-table`, `recharts`, `gantt-task-react`, `@mui/x-data-grid`
-- **HTTP & Sockets**: `axios`, `socket.io-client`
-- **Visuals & Icons**: `lucide-react`, `ogl` (WebGL liquid shader)
+- **Core**: Next.js 14 (App Router), React 18, TypeScript
+- **Styling**: Tailwind CSS, Tailwind Animate, next-themes
+- **State Management**: Redux Toolkit, React Context API (`SocketContext`)
+- **Drag and Drop**: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`
+- **Data & Charts**: `@tanstack/react-table`, Recharts, `gantt-task-react`, `@mui/x-data-grid`
+- **Networking**: Axios, Socket.io Client
+- **Icons & Graphics**: Lucide React, OGL (WebGL)
 
 ### Backend (`/server`)
-- **Runtime**: [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/) (`ts-node`, `nodemon`)
-- **Database ORM**: [Mongoose](https://mongoosejs.com/) (MongoDB)
-- **WebSockets**: [Socket.io](https://socket.io/) (Real-time events, chat, presence)
-- **Authentication**: `jsonwebtoken` (JWT), `bcryptjs`
-- **Security & Logging**: `helmet`, `cors`, `morgan`, `dotenv`
+- **Core**: Node.js, Express.js, TypeScript
+- **Database**: MongoDB via Mongoose ODM
+- **Real-Time**: Socket.io
+- **Auth & Security**: JSON Web Tokens (`jsonwebtoken`), `bcryptjs`, Helmet, CORS
+- **Process & Dev**: Nodemon, ts-node, Morgan, Dotenv
 
 ---
 
-## 📂 Project Directory Structure
+## Project Structure
 
 ```text
 Dev_Workflow_and_collaboration_platform/
 ├── README.md
 ├── client/                               # Next.js Frontend Application
-│   ├── public/                           # Static assets and icons
+│   ├── public/                           # Static assets
 │   ├── src/
 │   │   ├── app/                          # Next.js 14 App Router
-│   │   │   ├── (auth)/                   # Authentication pages (login, register)
-│   │   │   ├── (dashboard)/              # Protected application views
-│   │   │   │   ├── admin/                # Admin portal (dashboard, analytics, audit-logs, teams, users)
-│   │   │   │   ├── dashboard/            # Standard developer dashboard
-│   │   │   │   ├── projects/             # Project details (Board, Table, Timeline, New, Edit)
-│   │   │   │   └── settings/             # User settings
-│   │   │   ├── layout.tsx                # Root layout & theme providers
+│   │   │   ├── (auth)/                   # Login & registration pages
+│   │   │   ├── (dashboard)/              # Authenticated application views
+│   │   │   │   ├── admin/                # Admin views (dashboard, analytics, audit-logs, teams, users)
+│   │   │   │   ├── dashboard/            # Developer workspace
+│   │   │   │   ├── projects/             # Project views (Kanban, Table, Timeline, New, Edit)
+│   │   │   │   └── settings/             # Settings
+│   │   │   ├── layout.tsx                # App root layout
 │   │   │   └── page.tsx                  # Landing page
-│   │   ├── components/                   # Reusable UI components
-│   │   │   ├── Board/                    # Kanban board, columns, & task cards
-│   │   │   ├── Table/                    # Data table view
-│   │   │   ├── Timeline/                 # Gantt chart view
-│   │   │   ├── chat/                     # 1-on-1 real-time chat panel
-│   │   │   ├── comments/                 # Task comments component
+│   │   ├── components/                   # UI components
+│   │   │   ├── Board/                    # Kanban board, columns, task cards
+│   │   │   ├── Table/                    # Task data table
+│   │   │   ├── Timeline/                 # Gantt timeline chart
+│   │   │   ├── chat/                     # 1-on-1 direct chat panel
+│   │   │   ├── comments/                 # Task comment stream
 │   │   │   ├── layout/                   # Sidebar, Navbar, AdminNav
-│   │   │   └── Modal/                    # Task and project modals
-│   │   ├── contexts/                     # SocketContext for real-time connection
-│   │   ├── lib/                          # Axios instance, token helpers, navigation
-│   │   ├── state/                        # Redux slices and store configuration
-│   │   └── types/                        # TypeScript type definitions
+│   │   │   └── Modal/                    # Creation and edit modals
+│   │   ├── contexts/                     # SocketContext
+│   │   ├── lib/                          # Axios client, navigation utilities
+│   │   ├── state/                        # Redux slices and store setup
+│   │   └── types/                        # TypeScript definitions
 │   ├── package.json
 │   ├── tailwind.config.ts
 │   └── tsconfig.json
 │
-└── server/                               # Express.js & MongoDB Backend
-    ├── clean-and-seed.ts                 # Database reset and mock data seeding
-    ├── create-users.ts                   # User initialization script
-    ├── ecosystem.config.js               # PM2 production configuration
-    ├── aws-ec2-instructions.md           # AWS EC2 deployment documentation
+└── server/                               # Express.js Backend
+    ├── clean-and-seed.ts                 # Database reset and mock seed script
+    ├── create-users.ts                   # User seeding script
+    ├── ecosystem.config.js               # PM2 configuration
+    ├── aws-ec2-instructions.md           # EC2 deployment instructions
     ├── src/
-    │   ├── config/                       # Database connection (Mongoose)
-    │   ├── controllers/                  # Route logic (auth, projects, tasks, chat, etc.)
-    │   ├── middleware/                   # Auth & role verification middleware
-    │   ├── models/                       # Mongoose Schemas (User, Project, Task, Team, etc.)
-    │   ├── routes/                       # Express route definitions
-    │   ├── utils/                        # Logging & audit helper utilities
-    │   └── index.ts                      # App entry point & Socket.io server
+    │   ├── config/                       # Database connection setup
+    │   ├── controllers/                  # Route handlers
+    │   ├── middleware/                   # Authentication & role verification
+    │   ├── models/                       # Mongoose schemas (User, Project, Task, Team, etc.)
+    │   ├── routes/                       # Express API routes
+    │   ├── utils/                        # Logging & audit utilities
+    │   └── index.ts                      # Server entry point & Socket.io handler
     ├── package.json
     └── tsconfig.json
 ```
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
-
-Make sure you have the following installed on your machine:
-- **Node.js**: `v18.x` or higher
+- **Node.js**: v18.x or higher
 - **npm** or **yarn**
-- **MongoDB**: Local instance running on `mongodb://localhost:27017` or a [MongoDB Atlas](https://www.mongodb.com/atlas) connection string
+- **MongoDB**: Local MongoDB server or a [MongoDB Atlas](https://www.mongodb.com/atlas) cluster URI
 
 ---
 
@@ -210,61 +227,59 @@ cd the_project_
 
 ### 2. Server Setup
 
-1. Open a terminal and navigate to the `server` directory:
-   ```bash
-   cd server
-   ```
+```bash
+cd server
+npm install
+```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+Create a `.env` file in the `server` directory:
 
-3. Configure environment variables by creating `.env`:
-   ```env
-   PORT=5000
-   NODE_ENV=development
-   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.example.mongodb.net/devflow?retryWrites=true&w=majority
-   JWT_SECRET=your_super_secret_jwt_key_here
-   JWT_EXPIRES_IN=7d
-   ```
+```env
+PORT=5000
+NODE_ENV=development
+MONGODB_URI=mongodb://localhost:27017/devflow
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRES_IN=7d
+```
 
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-   *The server will run at `http://localhost:5000`.*
+Start the backend server:
+
+```bash
+npm run dev
+```
+
+*Backend server starts at `http://localhost:5000`.*
 
 ---
 
 ### 3. Client Setup
 
-1. Open a new terminal and navigate to the `client` directory:
-   ```bash
-   cd client
-   ```
+In a separate terminal window:
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+```bash
+cd client
+npm install
+```
 
-3. Configure environment variables in `client/.env`:
-   ```env
-   NEXT_PUBLIC_API_URL=http://localhost:5000/api
-   ```
+Create a `.env` file in the `client` directory:
 
-4. Start the Next.js development server:
-   ```bash
-   npm run dev
-   ```
-   *The client will run at `http://localhost:3000`.*
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
+
+Start the Next.js development server:
+
+```bash
+npm run dev
+```
+
+*Frontend application starts at `http://localhost:3000`.*
 
 ---
 
 ### 4. Seed Database
 
-To populate your database with sample projects, tasks, and users, run the seed script from the `server` directory:
+To seed initial users, sample projects, and tasks:
 
 ```bash
 cd server
@@ -273,158 +288,199 @@ npx ts-node clean-and-seed.ts
 
 ---
 
-## 🔑 Default Test Credentials
+## Seed Accounts
 
-When running `clean-and-seed.ts` or `create-users.ts`, the following accounts are initialized:
+The seeding script generates the following test accounts:
 
-| Role | Name | Email | Password | Access Level |
+| Role | Name | Email | Password | Scope |
 | :--- | :--- | :--- | :--- | :--- |
-| **Admin** | Arnold | `arnold@gmail.com` | `arnold123` | Full Access (Dashboard, Analytics, Audit Logs, Team & User Management) |
-| **User** | John Doe | `john@gmail.com` | `john123` | Developer Workspace (Projects, Tasks, Kanban, Chat) |
-| **User** | Jane Smith | `jane@gmail.com` | `jane123` | Developer Workspace |
-| **User** | Mike Johnson | `mike@gmail.com` | `mike123` | Developer Workspace |
-| **User** | Sarah Williams | `sarah@gmail.com` | `sarah123` | Developer Workspace |
+| **Admin** | Arnold | `arnold@gmail.com` | `arnold123` | System-wide access, admin panel, analytics, audit logs |
+| **User** | John Doe | `john@gmail.com` | `john123` | Project workspace, task updates, chat |
+| **User** | Jane Smith | `jane@gmail.com` | `jane123` | Project workspace, task updates, chat |
+| **User** | Mike Johnson | `mike@gmail.com` | `mike123` | Project workspace, task updates, chat |
+| **User** | Sarah Williams | `sarah@gmail.com` | `sarah123` | Project workspace, task updates, chat |
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 ### Backend (`server/.env`)
 
-| Variable | Description | Example |
-| :--- | :--- | :--- |
-| `PORT` | Port for the Express and Socket.IO server | `5000` |
-| `NODE_ENV` | Runtime environment (`development` / `production`) | `development` |
-| `MONGODB_URI` | MongoDB connection URI (Atlas or local) | `mongodb://localhost:27017/devflow` |
-| `JWT_SECRET` | Secret key used for signing JSON Web Tokens | `your_secret_hash_key` |
-| `JWT_EXPIRES_IN` | Token expiration duration | `7d` |
+| Variable | Required | Description | Default |
+| :--- | :---: | :--- | :--- |
+| `PORT` | No | Express and Socket.io listening port | `5000` |
+| `NODE_ENV` | No | Environment mode (`development` / `production`) | `development` |
+| `MONGODB_URI` | Yes | MongoDB connection string | — |
+| `JWT_SECRET` | Yes | Secret token for signing JWT credentials | — |
+| `JWT_EXPIRES_IN` | No | Token lifetime string | `7d` |
 
 ### Frontend (`client/.env`)
 
-| Variable | Description | Example |
-| :--- | :--- | :--- |
-| `NEXT_PUBLIC_API_URL` | Base endpoint for the backend API | `http://localhost:5000/api` |
+| Variable | Required | Description | Default |
+| :--- | :---: | :--- | :--- |
+| `NEXT_PUBLIC_API_URL` | Yes | Base URL for REST API endpoints | `http://localhost:5000/api` |
 
 ---
 
-## 📡 REST API Reference
+## API Reference
 
-All protected endpoints require the HTTP header:  
+Protected endpoints require the authorization header:  
 `Authorization: Bearer <JWT_TOKEN>`
 
-### Authentication (`/api/auth`)
-| Method | Endpoint | Access | Description |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/register` | Public | Register a new user account |
-| `POST` | `/api/auth/login` | Public | Authenticate user & return JWT token |
-| `GET` | `/api/auth/me` | Protected | Fetch current logged-in user profile |
+<details>
+<summary><strong>Authentication (<code>/api/auth</code>)</strong></summary>
 
-### Projects (`/api/projects`)
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/projects` | Protected | Get all projects associated with current user |
+| `POST` | `/api/auth/register` | Public | Register new user account |
+| `POST` | `/api/auth/login` | Public | Authenticate user credentials & return JWT |
+| `GET` | `/api/auth/me` | Protected | Return currently authenticated user profile |
+
+</details>
+
+<details>
+<summary><strong>Projects (<code>/api/projects</code>)</strong></summary>
+
+| Method | Endpoint | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/projects` | Protected | List all projects belonging to the user |
 | `POST` | `/api/projects` | Admin Only | Create a new project |
-| `GET` | `/api/projects/:id` | Protected | Retrieve specific project details |
-| `PUT` | `/api/projects/:id` | Protected | Update project metadata or status |
-| `DELETE` | `/api/projects/:id` | Admin Only | Delete project and associated records |
+| `GET` | `/api/projects/:id` | Protected | Fetch specific project details |
+| `PUT` | `/api/projects/:id` | Protected | Update project details or status |
+| `DELETE` | `/api/projects/:id` | Admin Only | Delete a project |
 
-### Tasks (`/api/tasks`)
+</details>
+
+<details>
+<summary><strong>Tasks (<code>/api/tasks</code>)</strong></summary>
+
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/tasks?projectId=:id` | Protected | List tasks (optionally filtered by project) |
-| `GET` | `/api/tasks/:id` | Protected | Get details of a single task |
-| `POST` | `/api/tasks` | Admin Only | Create a task under a project |
+| `GET` | `/api/tasks?projectId=:id` | Protected | List tasks (filtered by project ID) |
+| `GET` | `/api/tasks/:id` | Protected | Retrieve specific task details |
+| `POST` | `/api/tasks` | Admin Only | Create a task |
 | `PUT` | `/api/tasks/:id` | Protected | Update task status, priority, or completion |
-| `DELETE` | `/api/tasks/:id` | Admin Only | Delete task |
+| `DELETE` | `/api/tasks/:id` | Admin Only | Delete a task |
 
-### Task Comments (`/api/comments`)
+</details>
+
+<details>
+<summary><strong>Task Comments (<code>/api/comments</code>)</strong></summary>
+
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/comments/task/:taskId` | Protected | Fetch all comments for a task |
-| `POST` | `/api/comments/task/:taskId` | Protected | Add a new comment to a task |
+| `GET` | `/api/comments/task/:taskId` | Protected | Retrieve comments on a task |
+| `POST` | `/api/comments/task/:taskId` | Protected | Post a new comment |
 | `PUT` | `/api/comments/:commentId` | Protected | Edit comment content |
-| `DELETE` | `/api/comments/:commentId` | Protected | Delete a comment |
+| `DELETE` | `/api/comments/:commentId` | Protected | Delete comment |
 
-### Direct Messages (`/api/chat`)
+</details>
+
+<details>
+<summary><strong>Direct Messaging (<code>/api/chat</code>)</strong></summary>
+
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
 | `GET` | `/api/chat/conversation/:userId` | Protected | Get conversation history with user |
-| `GET` | `/api/chat/conversations` | Protected | List all active chats and last messages |
-| `PUT` | `/api/chat/read/:userId` | Protected | Mark conversation as read |
-| `GET` | `/api/chat/unread-count` | Protected | Get total count of unread messages |
+| `GET` | `/api/chat/conversations` | Protected | List all active direct message threads |
+| `PUT` | `/api/chat/read/:userId` | Protected | Mark conversation messages as read |
+| `GET` | `/api/chat/unread-count` | Protected | Return total unread message count |
 
-### Teams (`/api/teams`)
+</details>
+
+<details>
+<summary><strong>Teams (<code>/api/teams</code>)</strong></summary>
+
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
 | `GET` | `/api/teams` | Protected | List all teams |
-| `GET` | `/api/teams/:id` | Protected | Get team details and member list |
+| `GET` | `/api/teams/:id` | Protected | Retrieve single team details |
 | `POST` | `/api/teams` | Admin Only | Create a new team |
 | `PUT` | `/api/teams/:id` | Admin Only | Update team info or members |
 | `DELETE` | `/api/teams/:id` | Admin Only | Delete a team |
 
-### User Management (`/api/users`)
+</details>
+
+<details>
+<summary><strong>Users (<code>/api/users</code>)</strong></summary>
+
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/users` | Protected | Get all users (used for chat & assignments) |
+| `GET` | `/api/users` | Protected | List all registered users |
 | `GET` | `/api/users/profile` | Protected | Get current user profile |
 | `PUT` | `/api/users/profile` | Protected | Update current user profile |
-| `GET` | `/api/users/:id` | Protected | Get specific user by ID |
-| `PUT` | `/api/users/:id/role` | Admin Only | Update user role (`admin` or `user`) |
-| `DELETE` | `/api/users/:id` | Admin Only | Remove user |
+| `GET` | `/api/users/:id` | Protected | Get single user by ID |
+| `PUT` | `/api/users/:id/role` | Admin Only | Update user role (`admin` / `user`) |
+| `DELETE` | `/api/users/:id` | Admin Only | Delete user |
 
-### Analytics (`/api/analytics`)
+</details>
+
+<details>
+<summary><strong>Analytics (<code>/api/analytics</code>)</strong></summary>
+
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/analytics/dashboard-stats` | Protected | Overall user dashboard metrics |
-| `GET` | `/api/analytics/project/:projectId` | Protected | Specific project velocity and metrics |
-| `GET` | `/api/analytics/user-stats` | Protected | Personal task completion statistics |
-| `GET` | `/api/analytics/admin` | Admin Only | Organization-wide platform analytics |
+| `GET` | `/api/analytics/dashboard-stats` | Protected | General dashboard statistics |
+| `GET` | `/api/analytics/project/:projectId` | Protected | Project-specific performance data |
+| `GET` | `/api/analytics/user-stats` | Protected | Personal task completion rates |
+| `GET` | `/api/analytics/admin` | Admin Only | Platform-wide metrics and distribution |
 
-### Audit Logs (`/api/audit-logs`)
+</details>
+
+<details>
+<summary><strong>Audit Logs (<code>/api/audit-logs</code>)</strong></summary>
+
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/audit-logs` | Admin Only | View system-wide audit activity logs |
-| `GET` | `/api/audit-logs/user/:userId` | Admin Only | View audit events for a specific user |
+| `GET` | `/api/audit-logs` | Admin Only | Fetch system audit event history |
+| `GET` | `/api/audit-logs/user/:userId` | Admin Only | Fetch activity records for a specific user |
+
+</details>
 
 ---
 
-## ⚡ Socket.io Real-Time Events
+## WebSocket Events
 
-The server authenticates socket connections using JWT via the connection handshake (`auth: { token }`).
+Socket connections authenticate during the handshake via token payload:  
+`io(url, { auth: { token: '<JWT>' } })`
 
-| Event (Client &rarr; Server) | Payload | Description |
+### Client to Server
+
+| Event | Payload | Purpose |
 | :--- | :--- | :--- |
-| `sendMessage` | `{ receiverId, message }` | Sends direct message to recipient |
-| `newComment` | `{ taskId, comment }` | Broadcasts task comment update |
-| `typing` | `{ receiverId }` | Sends live typing indicator |
-| `stopTyping` | `{ receiverId }` | Stops live typing indicator |
+| `sendMessage` | `{ receiverId: string, message: string }` | Send a 1-on-1 direct message |
+| `newComment` | `{ taskId: string, comment: object }` | Broadcast new task comment |
+| `typing` | `{ receiverId: string }` | Emit typing status indicator |
+| `stopTyping` | `{ receiverId: string }` | Emit typing stopped status |
 
-| Event (Server &rarr; Client) | Payload | Description |
+### Server to Client
+
+| Event | Payload | Purpose |
 | :--- | :--- | :--- |
-| `onlineUsersList` | `{ userIds: string[] }` | List of currently online users upon connection |
+| `onlineUsersList` | `{ userIds: string[] }` | Sent on connection with active user IDs |
 | `userOnline` | `{ userId: string }` | Broadcast when a user connects |
 | `userOffline` | `{ userId: string }` | Broadcast when a user disconnects |
-| `newMessage` | `Message` | Received message payload |
-| `messageSent` | `Message` | Confirmation back to message sender |
-| `commentAdded` | `{ taskId, comment }` | Broadcast to update task comment feeds |
-| `userTyping` | `{ userId, name }` | Notification that peer is typing |
-| `userStopTyping` | `{ userId }` | Notification that peer stopped typing |
+| `newMessage` | `Message` | Incoming direct message object |
+| `messageSent` | `Message` | Confirmation response to sender |
+| `commentAdded` | `{ taskId: string, comment: object }` | Broadcasted comment to update UI |
+| `userTyping` | `{ userId: string, name: string }` | Peer started typing notification |
+| `userStopTyping` | `{ userId: string }` | Peer stopped typing notification |
 
 ---
 
-## 🌐 Production Deployment
+## Deployment
 
-### 1. Backend on AWS EC2 with PM2 & Nginx
+### Backend (AWS EC2 + PM2 + Nginx)
 
-1. **Provision EC2 Instance**: Use an Amazon Linux 2023 or Ubuntu instance.
-2. **Install Node.js & PM2**:
+1. Provision an Ubuntu / Amazon Linux instance.
+2. Install Node.js 20 and PM2:
    ```bash
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
    . ~/.nvm/nvm.sh
    nvm install 20
    npm install -g pm2
    ```
-3. **Build and Run with PM2**:
+3. Clone repository and build:
    ```bash
    cd server
    npm install
@@ -433,8 +489,7 @@ The server authenticates socket connections using JWT via the connection handsha
    pm2 save
    pm2 startup
    ```
-4. **Nginx Reverse Proxy**:
-   Route incoming traffic from port 80/443 to `http://127.0.0.1:5000` with WebSocket upgrade headers:
+4. Configure Nginx reverse proxy with WebSocket upgrade support:
    ```nginx
    location / {
        proxy_pass http://127.0.0.1:5000;
@@ -446,17 +501,15 @@ The server authenticates socket connections using JWT via the connection handsha
    }
    ```
 
-### 2. Frontend on Vercel
+### Frontend (Vercel)
 
-1. Push your code to GitHub.
-2. Import the repository into [Vercel](https://vercel.com).
-3. Set the **Root Directory** to `client`.
-4. Add the environment variable:
-   - `NEXT_PUBLIC_API_URL`: Your production backend API URL (or use the built-in rewrite configuration in `vercel.json` / `next.config.mjs`).
-5. Deploy!
+1. Import the repository into [Vercel](https://vercel.com).
+2. Set the root directory to `client`.
+3. Set `NEXT_PUBLIC_API_URL` to your production backend endpoint.
+4. Deploy the application.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [ISC License](LICENSE).
