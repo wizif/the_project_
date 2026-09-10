@@ -11,6 +11,7 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Socket.io](https://img.shields.io/badge/Socket.io-Real--Time-010101?style=flat-square&logo=socketdotio&logoColor=white)](https://socket.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-devprojectflow--web--platform--devflow.vercel.app-2563EB?style=flat-square&logo=vercel&logoColor=white)](https://devprojectflow-web-platform-devflow.vercel.app/)
 
 <br />
 
@@ -21,6 +22,8 @@
 <p align="center">
   A full-stack project management and collaboration platform built for agile development teams, featuring multi-view task tracking, real-time messaging, role-based administration, and audit logging.
 </p>
+
+🌐 **Live Demo**: [https://devprojectflow-web-platform-devflow.vercel.app/](https://devprojectflow-web-platform-devflow.vercel.app/)
 
 </div>
 
@@ -59,7 +62,7 @@
 ### Multi-View Task Management
 - **Kanban Board**: Drag-and-drop workflow progression powered by `@dnd-kit` across `To Do`, `In Progress`, `In Review`, and `Completed` columns.
 - **Data Table View**: High-density table with column sorting, status filtering, and priority indicators built with `@tanstack/react-table`.
-- **Gantt Timeline Chart**: Schedule visualization, dependency planning, and milestone tracking powered by `gantt-task-react`.
+- **Gantt Timeline Chart**: Schedule visualization, dependency planning, and milestone tracking powered by `gantt-task-react` and `frappe-gantt`.
 - **Task Attributes**: Priority tags (`Low`, `Medium`, `High`, `Urgent`), assignees, due dates, custom tags, and user completion tracking.
 
 ### Real-Time Collaboration
@@ -138,18 +141,19 @@ graph TD
 ## Tech Stack
 
 ### Frontend (`/client`)
-- **Core**: Next.js 14 (App Router), React 18, TypeScript
-- **Styling**: Tailwind CSS, Tailwind Animate, next-themes
-- **State Management**: Redux Toolkit, React Context API (`SocketContext`)
-- **Drag and Drop**: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`
-- **Data & Charts**: `@tanstack/react-table`, Recharts, `gantt-task-react`, `@mui/x-data-grid`
+- **Core**: Next.js 14 (App Router), React 18, TypeScript 5
+- **Styling**: Tailwind CSS 3.4, Tailwind Animate, next-themes
+- **State Management**: Redux Toolkit, `redux-persist`, React Context API (`SocketContext`)
+- **Drag and Drop**: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`, `react-dnd`
+- **Data & Charts**: `@tanstack/react-table`, Recharts, `gantt-task-react`, `frappe-gantt`, `@mui/x-data-grid`
 - **Networking**: Axios, Socket.io Client
+- **Utilities**: `date-fns`, `lodash`, `numeral`, `uuid`
 - **Icons & Graphics**: Lucide React, OGL (WebGL)
 
 ### Backend (`/server`)
-- **Core**: Node.js, Express.js, TypeScript
+- **Core**: Node.js, Express.js, TypeScript 5.9
 - **Database**: MongoDB via Mongoose ODM
-- **Real-Time**: Socket.io
+- **Real-Time**: Socket.io 4.8
 - **Auth & Security**: JSON Web Tokens (`jsonwebtoken`), `bcryptjs`, Helmet, CORS
 - **Process & Dev**: Nodemon, ts-node, Morgan, Dotenv
 
@@ -162,6 +166,7 @@ Dev_Workflow_and_collaboration_platform/
 ├── README.md
 ├── client/                               # Next.js Frontend Application
 │   ├── public/                           # Static assets
+│   ├── vercel.json                       # Vercel deployment configuration
 │   ├── src/
 │   │   ├── app/                          # Next.js 14 App Router
 │   │   │   ├── (auth)/                   # Login & registration pages
@@ -169,7 +174,8 @@ Dev_Workflow_and_collaboration_platform/
 │   │   │   │   ├── admin/                # Admin views (dashboard, analytics, audit-logs, teams, users)
 │   │   │   │   ├── dashboard/            # Developer workspace
 │   │   │   │   ├── projects/             # Project views (Kanban, Table, Timeline, New, Edit)
-│   │   │   │   └── settings/             # Settings
+│   │   │   │   └── settings/             # User settings
+│   │   │   ├── redux.tsx                 # Redux store provider wrapper
 │   │   │   ├── layout.tsx                # App root layout
 │   │   │   └── page.tsx                  # Landing page
 │   │   ├── components/                   # UI components
@@ -189,15 +195,17 @@ Dev_Workflow_and_collaboration_platform/
 │   └── tsconfig.json
 │
 └── server/                               # Express.js Backend
-    ├── clean-and-seed.ts                 # Database reset and mock seed script
-    ├── create-users.ts                   # User seeding script
+    ├── clean-and-seed.ts                 # Database reset and full mock seed script
+    ├── seed-data.ts                      # Lightweight data seeding script
+    ├── seed-more-data.ts                 # Extended data seeding script
+    ├── create-users.ts                   # User-only seeding script
     ├── ecosystem.config.js               # PM2 configuration
     ├── aws-ec2-instructions.md           # EC2 deployment instructions
     ├── src/
     │   ├── config/                       # Database connection setup
     │   ├── controllers/                  # Route handlers
-    │   ├── middleware/                   # Authentication & role verification
-    │   ├── models/                       # Mongoose schemas (User, Project, Task, Team, etc.)
+    │   ├── middleware/                   # Authentication & role verification (auth, roleCheck, auditLogger)
+    │   ├── models/                       # Mongoose schemas (User, Project, Task, Team, Message, Comment, AuditLog)
     │   ├── routes/                       # Express API routes
     │   ├── utils/                        # Logging & audit utilities
     │   └── index.ts                      # Server entry point & Socket.io handler
@@ -279,11 +287,27 @@ npm run dev
 
 ### 4. Seed Database
 
-To seed initial users, sample projects, and tasks:
+Several seeding scripts are available depending on how much data you need:
 
+**Full reset + seed** (drops all existing data and inserts a complete mock dataset):
 ```bash
 cd server
 npx ts-node clean-and-seed.ts
+```
+
+**Lightweight seed** (adds base data without resetting):
+```bash
+npx ts-node seed-data.ts
+```
+
+**Extended seed** (adds additional sample data on top of existing):
+```bash
+npx ts-node seed-more-data.ts
+```
+
+**Users only** (creates test user accounts):
+```bash
+npx ts-node create-users.ts
 ```
 
 ---
@@ -501,12 +525,18 @@ Socket connections authenticate during the handshake via token payload:
    }
    ```
 
+> Refer to [`aws-ec2-instructions.md`](server/aws-ec2-instructions.md) for the full step-by-step EC2 setup guide.
+
 ### Frontend (Vercel)
 
 1. Import the repository into [Vercel](https://vercel.com).
 2. Set the root directory to `client`.
 3. Set `NEXT_PUBLIC_API_URL` to your production backend endpoint.
 4. Deploy the application.
+
+The `client/vercel.json` file is pre-configured for clean Next.js routing on Vercel.
+
+🌐 **Deployed at**: [https://devprojectflow-web-platform-devflow.vercel.app/](https://devprojectflow-web-platform-devflow.vercel.app/)
 
 ---
 
