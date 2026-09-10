@@ -539,7 +539,3 @@ The `client/vercel.json` file is pre-configured for clean Next.js routing on Ver
 🌐 **Deployed at**: [https://devprojectflow-web-platform-devflow.vercel.app/](https://devprojectflow-web-platform-devflow.vercel.app/)
 
 ---
-
-## License
-
-This project is licensed under the [ISC License](LICENSE).
