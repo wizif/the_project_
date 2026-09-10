@@ -494,48 +494,58 @@ Socket connections authenticate during the handshake via token payload:
 
 ## Deployment
 
-### Backend (AWS EC2 + PM2 + Nginx)
+### Live Deployment
 
-1. Provision an Ubuntu / Amazon Linux instance.
-2. Install Node.js 20 and PM2:
-   ```bash
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-   . ~/.nvm/nvm.sh
-   nvm install 20
-   npm install -g pm2
-   ```
-3. Clone repository and build:
-   ```bash
-   cd server
-   npm install
-   npm run build
-   pm2 start ecosystem.config.js
-   pm2 save
-   pm2 startup
-   ```
-4. Configure Nginx reverse proxy with WebSocket upgrade support:
-   ```nginx
-   location / {
-       proxy_pass http://127.0.0.1:5000;
-       proxy_http_version 1.1;
-       proxy_set_header Upgrade $http_upgrade;
-       proxy_set_header Connection "upgrade";
-       proxy_set_header Host $host;
-       proxy_cache_bypass $http_upgrade;
-   }
-   ```
+| Service | Platform | URL |
+| :--- | :--- | :--- |
+| **Frontend** | Vercel | [https://devprojectflow-web-platform-devflow.vercel.app/](https://devprojectflow-web-platform-devflow.vercel.app/) |
+| **Backend** | Render | [https://developer-workflow-and-collab.onrender.com](https://developer-workflow-and-collab.onrender.com) |
 
-> Refer to [`aws-ec2-instructions.md`](server/aws-ec2-instructions.md) for the full step-by-step EC2 setup guide.
+> ⚠️ The backend is hosted on Render's **free tier**, which sleeps after 15 minutes of inactivity. The first request after idle may take ~30 seconds to wake up — this is expected behavior for the demo.
+
+---
+
+### Backend (Render)
+
+1. Fork / clone the repository and push to GitHub.
+2. Go to [render.com](https://render.com) → **New Web Service**.
+3. Connect your GitHub repo. Render will auto-detect `render.yaml`.
+4. Set the following environment variables in the Render dashboard:
+
+   | Variable | Description |
+   | :--- | :--- |
+   | `MONGODB_URI` | Your MongoDB Atlas connection string |
+   | `JWT_SECRET` | A long random secret string |
+   | `JWT_EXPIRES_IN` | `7d` |
+   | `NODE_ENV` | `production` |
+
+5. Deploy — Render runs `npm install && tsc` then `node dist/index.js`.
+
+> The `render.yaml` at the repo root pre-configures the service settings (root dir, build/start commands, health check path).
 
 ### Frontend (Vercel)
 
 1. Import the repository into [Vercel](https://vercel.com).
 2. Set the root directory to `client`.
-3. Set `NEXT_PUBLIC_API_URL` to your production backend endpoint.
-4. Deploy the application.
+3. Deploy — no environment variables needed; API calls are proxied via `client/vercel.json`.
 
-The `client/vercel.json` file is pre-configured for clean Next.js routing on Vercel.
+The `client/vercel.json` proxies all `/api/*` requests to the Render backend automatically:
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://developer-workflow-and-collab.onrender.com/api/:path*"
+    }
+  ]
+}
+```
 
 🌐 **Deployed at**: [https://devprojectflow-web-platform-devflow.vercel.app/](https://devprojectflow-web-platform-devflow.vercel.app/)
 
 ---
+
+## License
+
+This project is licensed under the [ISC License](LICENSE).
