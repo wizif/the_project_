@@ -154,8 +154,8 @@ export default function LoginPage() {
         <div className="mt-6 text-center bg-white/50 dark:bg-gray-800/50 backdrop-blur-md rounded-lg p-4 border border-white/20">
           <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-2">Demo Credentials:</p>
           <p className="text-xs text-gray-500 dark:text-gray-500">
-            Admin: admin@projectflow.com / admin123<br />
-            User: user@projectflow.com / user123
+            Admin: arnold@gmail.com / arnold123<br />
+            User: john@gmail.com / john123
           </p>
         </div>
       </div>

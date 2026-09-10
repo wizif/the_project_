@@ -30,7 +30,13 @@ connectDB();
 
 // CORS Configuration
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'https://dev4flow.vercel.app'],
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'https://dev4flow.vercel.app',
+    'https://devprojectflow-web-platform-devflow.vercel.app',
+  ],
   credentials: true,
 };
 
