@@ -510,6 +510,3 @@ Socket connections authenticate during the handshake via token payload:
 
 ---
 
-## License
-
-This project is licensed under the [ISC License](LICENSE).
