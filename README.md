@@ -18,7 +18,7 @@
 <a href="https://git.io/typing-svg">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=1000&color=2563EB&center=true&vCenter=true&width=620&lines=Full-Stack+Developer+Workflow+Platform;Interactive+Kanban%2C+Table+%26+Gantt+Timeline;Real-Time+Socket.io+Chat+%26+Discussions;Role-Based+Access+Control+%26+Audit+Logging" alt="Typing SVG Animation" />
 </a>
-
+ 
 <p align="center">
   A full-stack project management and collaboration platform built for agile development teams, featuring multi-view task tracking, real-time messaging, role-based administration, and audit logging.
 </p>
