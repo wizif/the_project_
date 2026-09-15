@@ -13,7 +13,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-devprojectflow--web--platform--devflow.vercel.app-2563EB?style=flat-square&logo=vercel&logoColor=white)](https://devprojectflow-web-platform-devflow.vercel.app/)
 
-<br /> 
+<br />  
 
 <a href="https://git.io/typing-svg">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=2800&pause=1000&color=2563EB&center=true&vCenter=true&width=620&lines=Full-Stack+Developer+Workflow+Platform;Interactive+Kanban%2C+Table+%26+Gantt+Timeline;Real-Time+Socket.io+Chat+%26+Discussions;Role-Based+Access+Control+%26+Audit+Logging" alt="Typing SVG Animation" />
